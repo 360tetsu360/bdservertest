@@ -1,7 +1,7 @@
 const dgram = require("dgram");
 const Client = require("./Client");
 const { EventEmitter } = require("events");
-const { MakeGUID } = require("./utils");
+const Utils = require("./utils");
 
 class Server extends EventEmitter {
 	constructor(Host, Port) {
@@ -10,7 +10,7 @@ class Server extends EventEmitter {
 
         this.ClientList = {};
         this.Server = dgram.createSocket('udp4');
-        this.GUID = MakeGUID();
+        this.GUID = Utils.MakeGUID();
 
 
         var me = this;
