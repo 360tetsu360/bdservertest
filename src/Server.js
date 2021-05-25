@@ -6,9 +6,7 @@ class Server extends EventEmitter {
 	constructor(Host, Port) {
         super();
         this.ClientList = {};
-        var _ClientList = {};
         this.Server = dgram.createSocket('udp4');
-        var _Server = this.Server;
         var me = this;
         this.Options = {
             Host,
@@ -18,14 +16,17 @@ class Server extends EventEmitter {
             this.emit('listening', this.Host, this.Port);
         });
         this.Server.on('message', function (buffer, remote) {
-            if (!Object.hasOwnProperty.call(_ClientList, remote.address)) {
-                _ClientList[remote.address] = new Client(remote, _Server);
+            if (!Object.hasOwnProperty.call(me.ClientList, remote.address)) {
+                me.ClientList[remote.address] = new Client(remote, me.Server);
             }
             
-            var client = _ClientList[remote.address];
+            var client = me.ClientList[remote.address];
             me.emit("connection", client);
             
         });
+        this.Server.on('error', (e) => {
+            me.emit('error', e)
+        })
     }
     Start() {
         this.Server.bind(this.Options.Port, this.Options.Host);

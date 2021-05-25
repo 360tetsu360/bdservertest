@@ -7,6 +7,6 @@ server.on('listening', function () {
 });
 
 server.on("connection", (client) => {
-    console.log(client);
+    console.log(Object.keys(server.ClientList).length);
 });
 server.Start();
